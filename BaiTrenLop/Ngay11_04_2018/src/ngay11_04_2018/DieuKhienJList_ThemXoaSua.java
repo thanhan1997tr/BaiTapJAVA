@@ -5,6 +5,9 @@
  */
 package ngay11_04_2018;
 
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 
 /**
@@ -35,12 +38,18 @@ public class DieuKhienJList_ThemXoaSua extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("THÊM XÓA SỬA LIST");
 
+        lsName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lsNameMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(lsName);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -57,19 +66,29 @@ public class DieuKhienJList_ThemXoaSua extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Input name");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton1.setText("Add Item");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnAdd.setText("Add Item");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton2.setText("Remove Item");
+        btnRemove.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnRemove.setText("Remove Item");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton3.setText("Edit Item");
+        btnEdit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEdit.setText("Edit Item");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -79,14 +98,14 @@ public class DieuKhienJList_ThemXoaSua extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jButton1))
+                    .addComponent(btnAdd))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtName)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btnRemove)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
+                        .addComponent(btnEdit)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -99,9 +118,9 @@ public class DieuKhienJList_ThemXoaSua extends javax.swing.JFrame {
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnAdd)
+                    .addComponent(btnRemove)
+                    .addComponent(btnEdit))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -127,18 +146,72 @@ public class DieuKhienJList_ThemXoaSua extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    ArrayList <String> arrTen = new ArrayList<>();
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        //Lấy về model
-        ListModel dsTen = lsName.getModel();
-        
-        //Từ model sang mảng
-        String[] aTen = null;
-        for (int i=0; i<dsTen.getSize(); i++){
-            aTen[i] = dsTen.getElementAt(i).toString();
+        String item = txtName.getText().trim();
+        if (item.equals("")){
+            JOptionPane.showMessageDialog(null,
+                    "Chưa nhập tên", "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        else{
+            
+            //Lấy về model
+            ListModel dsTen = lsName.getModel();
+            
+            arrTen.add(txtName.getText());
+            String[] aTen = arrTen.toArray(new String[dsTen.getSize() + 1]);
+            lsName.setListData(aTen);
+            txtName.setText("");
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        // TODO add your handling code here:
+        int iStt = lsName.getSelectedIndex();
+        ListModel dsTen = lsName.getModel();
+        String[] aTen = arrTen.toArray(new String[dsTen.getSize() + 1]);
+        lsName.setListData(aTen);
+        txtName.setText("");
+        if(iStt < 0){
+            JOptionPane.showMessageDialog(null,
+                    "Bạn chưa chọn tên để xóa.", "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            ListModel model = lsName.getModel();
+            String sName = model.getElementAt(iStt).toString();
+            int i=0;
+            for (String n : arrTen){
+                if(iStt == i){
+                    arrTen.remove(sName);
+                    break;
+                }
+                i++;
+            }
+        }
+    }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        int iStt = lsName.getSelectedIndex();
+        ListModel model = lsName.getModel();
+        //String sName = model.getElementAt(iStt).toString();
+        arrTen.set(iStt, txtName.getText());
+        ListModel dsTen = lsName.getModel();
+        String[] aTen = arrTen.toArray(new String[dsTen.getSize() + 1]);
+        lsName.setListData(aTen);
+        txtName.setText("");
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void lsNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lsNameMouseClicked
+        // TODO add your handling code here:
+        int iStt = lsName.getSelectedIndex();
+        ListModel model = lsName.getModel();
+        String sName = model.getElementAt(iStt).toString();
+        txtName.setText(sName);
+    }//GEN-LAST:event_lsNameMouseClicked
 
     /**
      * @param args the command line arguments
@@ -176,9 +249,9 @@ public class DieuKhienJList_ThemXoaSua extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnRemove;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
