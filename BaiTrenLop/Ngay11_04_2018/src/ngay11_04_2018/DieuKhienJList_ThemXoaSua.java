@@ -156,12 +156,8 @@ public class DieuKhienJList_ThemXoaSua extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
         else{
-            
-            //Lấy về model
-            ListModel dsTen = lsName.getModel();
-            
             arrTen.add(txtName.getText());
-            String[] aTen = arrTen.toArray(new String[dsTen.getSize() + 1]);
+            String[] aTen = arrTen.toArray(new String[arrTen.size() + 1]);
             lsName.setListData(aTen);
             txtName.setText("");
         }
@@ -169,38 +165,30 @@ public class DieuKhienJList_ThemXoaSua extends javax.swing.JFrame {
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         // TODO add your handling code here:
-        int iStt = lsName.getSelectedIndex();
-        ListModel dsTen = lsName.getModel();
-        String[] aTen = arrTen.toArray(new String[dsTen.getSize() + 1]);
-        lsName.setListData(aTen);
-        txtName.setText("");
-        if(iStt < 0){
+        String sName = txtName.getText();
+        if(sName.equals("")){
             JOptionPane.showMessageDialog(null,
                     "Bạn chưa chọn tên để xóa.", "Lỗi",
                     JOptionPane.ERROR_MESSAGE);
         }
         else{
-            ListModel model = lsName.getModel();
-            String sName = model.getElementAt(iStt).toString();
-            int i=0;
             for (String n : arrTen){
-                if(iStt == i){
+                if(sName.equals(n)){
                     arrTen.remove(sName);
                     break;
                 }
-                i++;
             }
+           String[] aTen = arrTen.toArray(new String[arrTen.size()+1]);
+           lsName.setListData(aTen);
+           txtName.setText("");
         }
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
         int iStt = lsName.getSelectedIndex();
-        ListModel model = lsName.getModel();
-        //String sName = model.getElementAt(iStt).toString();
         arrTen.set(iStt, txtName.getText());
-        ListModel dsTen = lsName.getModel();
-        String[] aTen = arrTen.toArray(new String[dsTen.getSize() + 1]);
+        String[] aTen = arrTen.toArray(new String[arrTen.size() + 1]);
         lsName.setListData(aTen);
         txtName.setText("");
     }//GEN-LAST:event_btnEditActionPerformed
