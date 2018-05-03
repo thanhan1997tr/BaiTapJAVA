@@ -6,6 +6,7 @@
 package baitaprenluyen;
 
 import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,6 +27,14 @@ public class BaiTap89 extends javax.swing.JFrame {
         tableTitle.add("Số sản phẩm");
         tableTitle.add("Vượt chuẩn");
         tbNhanVien.setModel(new DefaultTableModel(tableRecords, tableTitle));
+    }
+    
+    public void Clear_All(){
+        txtMaNv.setText("");
+        txtSoSp.setText("");
+        txtSpChuan.setText("300");
+        txtTienLuong.setText("");
+        cbbPhanXuong.setSelectedItem("A");
     }
 
     /**
@@ -93,9 +102,14 @@ public class BaiTap89 extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "", "", "", "Title4"
+                "", "", "", ""
             }
         ));
+        tbNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbNhanVienMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbNhanVien);
 
         btnTinhLuong.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -116,9 +130,19 @@ public class BaiTap89 extends javax.swing.JFrame {
 
         btnXoa.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnSua.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
         btnDong.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnDong.setText("Đóng");
@@ -305,25 +329,28 @@ public class BaiTap89 extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Số sản phẩm phải là số");
         }
     }//GEN-LAST:event_btnTinhLuongActionPerformed
-    Vector tableRecords = new Vector();
-    Vector tableTitle = new Vector();
+    Vector tableRecords = new Vector(); //Vector chứa các dòng dữ liệu của bảng.
+    Vector tableTitle = new Vector(); //Vector chứa các tiêu đề của bảng.
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
         try {
             nv.setMaNhanVien(txtMaNv.getText());
             nv.setSoSp(Integer.parseInt(txtSoSp.getText()));
+            nv.setPhanXuong(cbbPhanXuong.getSelectedItem().toString());
             
             String getVuotChuan = "";
             if (nv.VuotChuan())
                 getVuotChuan = "x";
             
             Vector record = new Vector();
-                record.add(txtMaNv.getText());
-                record.add(cbbPhanXuong.getSelectedItem());
-                record.add(txtSoSp.getText());
-                record.add(getVuotChuan);
-                tableRecords.add(record);
-                tbNhanVien.setModel(new DefaultTableModel(tableRecords, tableTitle));
+            record.add(txtMaNv.getText());
+            record.add(cbbPhanXuong.getSelectedItem());
+            record.add(txtSoSp.getText());
+            record.add(getVuotChuan);
+            tableRecords.add(record);
+            tbNhanVien.setModel(new DefaultTableModel(tableRecords, tableTitle));
+            
+            Clear_All();
         } catch (Exception e) {
             String t = "";
             if (t.equals(txtMaNv.getText()))
@@ -335,6 +362,58 @@ public class BaiTap89 extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        // TODO add your handling code here:
+        int iDongDaChon = tbNhanVien.getSelectedRow();
+            if (iDongDaChon == -1) {
+                JOptionPane.showMessageDialog(rootPane, "Bạn chưa chọn record cần xóa");
+            } else {
+                Vector vDongDaChon = (Vector) tableRecords.get(iDongDaChon);
+                String MaNvCuaDongDaChon = vDongDaChon.get(0).toString();
+                if (JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc chắn muốn xóa dòng đã chọn có mã nv: " + MaNvCuaDongDaChon, "Lựa chọn", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    tableRecords.remove(iDongDaChon);
+                    tbNhanVien.setModel(new DefaultTableModel(tableRecords, tableTitle));
+                }
+            }
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        // TODO add your handling code here:
+        int iDongDaChon = tbNhanVien.getSelectedRow();
+            if (iDongDaChon == -1) {
+                JOptionPane.showMessageDialog(rootPane, "Xin vui lòng chọn dòng cần sửa");
+            } else {
+                String getVuotChuan = "";
+                if (nv.VuotChuan())
+                    getVuotChuan = "x";
+                
+                Vector record = new Vector();
+                record.add(txtMaNv.getText());
+                record.add(cbbPhanXuong.getSelectedItem());
+                record.add(txtSoSp.getText());
+                record.add(getVuotChuan);
+                tableRecords.set(iDongDaChon, record);
+                tbNhanVien.setModel(new DefaultTableModel(tableRecords, tableTitle));
+                Clear_All();
+            }
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void tbNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbNhanVienMouseClicked
+        // TODO add your handling code here:
+        int iDongDaChon = tbNhanVien.getSelectedRow();
+            if (iDongDaChon != -1) {
+                Vector vDongDaChon = (Vector) tableRecords.get(iDongDaChon);
+                String Manv = vDongDaChon.get(0).toString();
+                String Px = vDongDaChon.get(1).toString();
+                String Sp = vDongDaChon.get(2).toString();
+                //txtSpChuan.setText(String.valueOf(nv.getChuan()));
+                txtMaNv.setText(Manv);
+                txtSoSp.setText(Sp);
+                cbbPhanXuong.setSelectedItem(Px);
+                txtTienLuong.setText(String.valueOf(nv.TinhLuong()));
+            }
+    }//GEN-LAST:event_tbNhanVienMouseClicked
 
     /**
      * @param args the command line arguments
