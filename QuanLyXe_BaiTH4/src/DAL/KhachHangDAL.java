@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 /**
@@ -97,5 +98,27 @@ public class KhachHangDAL {
         } catch (Exception e) {
         }
         return ktra;
-    } 
+    }
+    
+    public ArrayList<KhachHangDTO> TimKH(JComboBox cbb){
+        ArrayList<KhachHangDTO> dskh = new ArrayList<>();
+        try {
+            String sql = "EXEC KHACHHANG_LOAD";
+            Statement ss = conn.createStatement();
+            ResultSet rs = ss.executeQuery(sql);
+            while(rs.next()){
+                if (rs.getString("HOTENKHACH").toUpperCase().equals(cbb.getSelectedItem().toString().toUpperCase())){
+                    String makhach = rs.getString("MAKHACH");
+                    String hoten = rs.getString("HOTENKHACH");
+                    String diachi = rs.getString("DIACHI");
+                    String dienthoai = rs.getString("DIENTHOAI");
+                    KhachHangDTO kh = new KhachHangDTO(makhach, hoten, diachi, dienthoai);
+                    dskh.add(kh);
+                }
+            }
+            
+        } catch (Exception e) {
+        }
+        return dskh;
+    }
 }
